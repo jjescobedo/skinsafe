@@ -1,1 +1,3 @@
-# cac-2024
+# Congressional App Challenge 2024
+
+Skin cancer application
