@@ -1,0 +1,3 @@
+ml/data/train-image.hdf5
+ml/data/train-metadata.csv
+ml/recognition_model.keras.gz
