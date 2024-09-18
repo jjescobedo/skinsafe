@@ -1,3 +1,5 @@
-ml/data/train-image.hdf5
-ml/data/train-metadata.csv
-ml/recognition_model.keras.gz
+backend/ml/data/train-image.hdf5
+backend/ml/data/train-metadata.csv
+backend/ml/recognition_model.keras.gz
+backend/ml/recognition_model.keras
+node_modules/
