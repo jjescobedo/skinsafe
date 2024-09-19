@@ -69,3 +69,6 @@ frontend/.yarn/*
 !frontend/.yarn/releases
 !frontend/.yarn/sdks
 !frontend/.yarn/versions
+
+# dotenv
+.env
