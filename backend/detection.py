@@ -15,6 +15,7 @@ def preprocess_image(image: Image.Image) -> np.ndarray:
     """
     Preprocess the image to the format required by the model.
     """
+    image = image.convert("RGB")  # Convert image to RGB
     image = image.resize((224, 224))
     image = img_to_array(image)
     image = image / 255.0
