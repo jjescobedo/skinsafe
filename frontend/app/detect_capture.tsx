@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, Button, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, Text, Button, Pressable, Image } from 'react-native';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
@@ -90,10 +90,10 @@ export default function DetectCapture() {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => router.push('/detect')}>
+      <Pressable style={styles.backButton} onPress={() => router.push('/detect')}>
         <Image source={require('../assets/back.png')} style={styles.backButtonImage} />
         <View style={styles.backButtonCircle} />
-      </TouchableOpacity>
+      </Pressable>
       
       <CameraView
         style={styles.camera}
@@ -102,18 +102,18 @@ export default function DetectCapture() {
         onCameraReady={onCameraReady}
       >
         <View style={styles.topContainer}>
-          <TouchableOpacity style={styles.flipButton} onPress={toggleCameraFacing}>
+          <Pressable style={styles.flipButton} onPress={toggleCameraFacing}>
             <Image source={require('../assets/flip.png')} style={styles.flipButtonImage} />
             <View style={styles.flipButtonCircle} />
-          </TouchableOpacity>
+          </Pressable>
         </View>
         <View style={styles.bottomContainer}>
-          <TouchableOpacity style={styles.captureButton} onPress={takePicture}>
+          <Pressable style={styles.captureButton} onPress={takePicture}>
             <Image source={require('../assets/capture.png')} style={styles.captureButtonImage} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.uploadButton} onPress={pickImage}>
+          </Pressable>
+          <Pressable style={styles.uploadButton} onPress={pickImage}>
             <Text style={styles.text}>Upload</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
         <View style={styles.overlay}>
           <View style={styles.circle} />

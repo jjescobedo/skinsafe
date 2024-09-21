@@ -14,6 +14,17 @@ const Weather: React.FC = () => {
   const [weatherCondition, setWeatherCondition] = useState('Sunny');
   const [weatherIcon, setWeatherIcon] = useState('🌞');
 
+  // Dictionary for weather icons
+  const weatherIcons = {
+    Sunny: '🌞',
+    Cloudy: '☁️',
+    'Partly Cloudy': '⛅',
+    Windy: '🌬️',
+    Raining: '🌧️',
+    Snowing: '❄️',
+    Lightning: '⚡'
+  };
+
   useEffect(() => {
     (async () => {
       let location = await Location.getCurrentPositionAsync({});
@@ -22,9 +33,12 @@ const Weather: React.FC = () => {
       try {
         const response = await fetch(`https://cac-2024-api.onrender.com/weather/weather?lat=${latitude}&lon=${longitude}`);
         const data = await response.json();
-        console.log(data); 
         setUvRating(data.uv_index);
         setUvRisk(data.skin_cancer_risk);
+        const roundedTemperature = Math.round(data.temperature);
+        setTemperature(`${roundedTemperature}° F`);
+        setWeatherCondition(data.forecast);
+        setWeatherIcon(weatherIcons[data.forecast] || '🌞');
       } catch (error) {
         console.error(error);
       } finally {
@@ -185,6 +199,7 @@ const styles = StyleSheet.create({
   },
   weatherIcon: {
     fontSize: 80,
+    marginTop: -10,
   },
   condition: {
     fontSize: 18,
@@ -214,6 +229,8 @@ const styles = StyleSheet.create({
   },
 
   // Protection styles
+  
+  // Protection styles
   protContainer: {
     backgroundColor: 'white',
     width: 350,
@@ -224,28 +241,29 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     marginLeft: 'auto',
     marginRight: 'auto',
+    marginTop: 20,
     padding: 20,
   },
   protTitle: {
-    fontSize: 30,
+    fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
-    marginLeft: 20,
-    marginRight: 20,
   },
-  protTextBody: {
-    fontSize: 14,
+  protText: {
+    fontSize: 16,
+    color: '#333',
     marginBottom: 10,
-    marginLeft: 20,
-    marginRight: 20,
-    color: 'gray',
-    lineHeight: 20,
   },
-  protTextList: {
-    fontSize: 18,
-    marginBottom: 10,
-    marginLeft: 20,
-    marginRight: 20,
+  protButton: {
+    backgroundColor: '#007BFF',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  protButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

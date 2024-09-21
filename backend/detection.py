@@ -9,7 +9,7 @@ import io
 app = FastAPI()
 router = APIRouter()
 
-model = load_model('cac-2024/backend/ml/recognition_model.keras')
+model = load_model('ml/recognition_model.keras')
 
 def preprocess_image(image: Image.Image) -> np.ndarray:
     """
