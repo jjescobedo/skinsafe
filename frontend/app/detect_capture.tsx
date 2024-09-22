@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, Button, Pressable, Image } from 'react-native';
+import { View, StyleSheet, Text, Button, Pressable, Image, Alert } from 'react-native';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
@@ -71,9 +71,18 @@ export default function DetectCapture() {
     });
 
     if (!result.canceled && result.assets && result.assets.length > 0) {
-      const { uri } = result.assets[0];
-      const croppedPhoto = await cropImageToSquare({ uri, width: result.assets[0].width, height: result.assets[0].height });
-      navigateToReport(croppedPhoto.uri);
+      const { uri, width, height } = result.assets[0];
+      if (width !== height) {
+        try {
+          const croppedPhoto = await cropImageToSquare({ uri, width, height });
+          navigateToReport(croppedPhoto.uri);
+        } catch (error) {
+          console.error("Error cropping image:", error);
+          Alert.alert("Error", "The image could not be cropped automatically. Please recrop the image.");
+        }
+      } else {
+        navigateToReport(uri);
+      }
     }
   }
 

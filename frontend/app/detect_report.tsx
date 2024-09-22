@@ -40,6 +40,20 @@ export default function DetectReport() {
     }
   }
 
+  function getDiagnosisText(percentage) {
+    if (percentage < 0.25) {
+      return 'Benign';
+    } else if (percentage >= 0.25 && percentage < 0.35) {
+      return 'Likely Benign';
+    } else if (percentage >= 0.35 && percentage < 0.65) {
+      return 'Inconclusive';
+    } else if (percentage >= 0.65 && percentage < 0.75) {
+      return 'Likely Malignant';
+    } else {
+      return 'Malignant';
+    }
+  }
+
   return (
     <View style={styles.container}>
       <Image source={{ uri: photoUri }} style={styles.previewImage} />
@@ -48,7 +62,7 @@ export default function DetectReport() {
       ) : (
         percentage !== null && (
           <Text style={styles.percentageText}>
-            {percentage < 0.50 ? 'Benign' : 'Malignant'}
+            {getDiagnosisText(percentage)}
           </Text>
         )
       )}
@@ -59,7 +73,7 @@ export default function DetectReport() {
         <TouchableOpacity style={styles.evaluateMoreButton} onPress={() => router.push('/detect_capture')}>
           <Text style={styles.buttonText}>Evaluate More</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.discardButton} onPress={() => router.push('/detect_capture')}>
+        <TouchableOpacity style={styles.discardButton} onPress={() => router.push('/detect')}>
           <Text style={styles.buttonText}>Discard</Text>
         </TouchableOpacity>
       </View>
@@ -83,6 +97,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
     textAlign: 'center',
+    marginTop: 20,
     marginVertical: 20,
   },
   buttonContainer: {
