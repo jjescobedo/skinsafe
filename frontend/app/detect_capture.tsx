@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, Button, Pressable, Image, Alert } from 'react-native';
+import { View, StyleSheet, Text, Button, Pressable, Image, Alert, Dimensions } from 'react-native';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
@@ -11,6 +11,11 @@ export default function DetectCapture() {
   const [permission, requestPermission] = useCameraPermissions();
   const [cameraRef, setCameraRef] = useState(null);
   const [isCameraReady, setIsCameraReady] = useState(false);
+
+  const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+  const squareSize = 300; // Size of the square guideline
+  const squareX = (screenWidth - squareSize) / 2;
+  const squareY = (screenHeight - squareSize) / 2;
 
   if (!permission) {
     return <View />;
@@ -32,7 +37,7 @@ export default function DetectCapture() {
   async function takePicture() {
     if (cameraRef && isCameraReady) {
       try {
-        const options = { quality: 0.5, base64: true };
+        const options = { quality: 0.5, base64: true, flashMode: 'on' };
         const photo = await cameraRef.takePictureAsync(options);
         const croppedPhoto = await cropImageToSquare(photo);
         navigateToReport(croppedPhoto.uri);
@@ -43,17 +48,24 @@ export default function DetectCapture() {
   }
 
   async function cropImageToSquare(photo) {
-    const maxWidth = photo.width;
-    const cropSize = maxWidth; 
+    const { width, height } = photo;
+    const scaleX = width / screenWidth;
+    const scaleY = height / screenHeight;
+
+    const cropX = squareX * scaleX;
+    const cropY = squareY * scaleY;
+    const cropWidth = squareSize * scaleX;
+    const cropHeight = squareSize * scaleY;
+
     const manipResult = await ImageManipulator.manipulateAsync(
       photo.uri,
       [
         {
           crop: {
-            originX: 0,
-            originY: (photo.height - cropSize) / 2,
-            width: cropSize,
-            height: cropSize,
+            originX: cropX,
+            originY: cropY,
+            width: cropWidth,
+            height: cropHeight,
           },
         },
       ],
@@ -126,6 +138,7 @@ export default function DetectCapture() {
         </View>
         <View style={styles.overlay}>
           <View style={styles.circle} />
+          <View style={styles.square} />
         </View>
       </CameraView>
     </View>
@@ -209,13 +222,22 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   circle: {
-    width: 100,
-    height: 100,
+    width: 70,
+    height: 70,
     borderRadius: 100,
     borderWidth: 2,
     borderColor: 'white',
     borderStyle: 'dotted',
     backgroundColor: 'rgba(255, 255, 255, 0.5)',
+  },
+  square: {
+    width: 300,
+    height: 300,
+    borderWidth: 2,
+    borderColor: 'white',
+    borderStyle: 'dotted',
+    backgroundColor: 'transparent',
+    position: 'absolute',
   },
   text: {
     fontSize: 18,

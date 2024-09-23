@@ -32,6 +32,7 @@ export default function DetectReport() {
       });
 
       const data = await response.json();
+      console.log(data);
       setPercentage(data.prediction);
     } catch (error) {
       console.error("Error evaluating photo:", error);
@@ -73,7 +74,7 @@ export default function DetectReport() {
         <Pressable style={styles.evaluateMoreButton} onPress={() => router.push('/detect_capture')}>
           <Text style={styles.buttonText}>Evaluate More</Text>
         </Pressable>
-        <Pressable style={styles.discardButton} onPress={() => router.push('/detect')}>
+        <Pressable style={styles.discardButton} onPress={() => router.push('/detect_capture')}>
           <Text style={styles.buttonText}>Discard</Text>
         </Pressable>
       </View>
