@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, Image, ActivityIndicator, Pressable } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 
 export default function DetectReport() {
@@ -43,11 +43,11 @@ export default function DetectReport() {
   function getDiagnosisText(percentage) {
     if (percentage < 0.25) {
       return 'Benign';
-    } else if (percentage >= 0.25 && percentage < 0.35) {
+    } else if (percentage >= 0.35 && percentage < 0.45) {
       return 'Likely Benign';
-    } else if (percentage >= 0.35 && percentage < 0.65) {
+    } else if (percentage >= 0.45 && percentage < 0.75) {
       return 'Inconclusive';
-    } else if (percentage >= 0.65 && percentage < 0.75) {
+    } else if (percentage >= 0.75 && percentage < 0.85) {
       return 'Likely Malignant';
     } else {
       return 'Malignant';
@@ -67,15 +67,15 @@ export default function DetectReport() {
         )
       )}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.saveButton} onPress={() => router.push('/detect')}>
+        <Pressable style={styles.saveButton} onPress={() => router.push('/detect')}>
           <Text style={styles.buttonText}>Save</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.evaluateMoreButton} onPress={() => router.push('/detect_capture')}>
+        </Pressable>
+        <Pressable style={styles.evaluateMoreButton} onPress={() => router.push('/detect_capture')}>
           <Text style={styles.buttonText}>Evaluate More</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.discardButton} onPress={() => router.push('/detect')}>
+        </Pressable>
+        <Pressable style={styles.discardButton} onPress={() => router.push('/detect')}>
           <Text style={styles.buttonText}>Discard</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   );
@@ -91,13 +91,13 @@ const styles = StyleSheet.create({
     width: '100%',
     aspectRatio: 1,
     resizeMode: 'contain',
+    margin: 20,
   },
   percentageText: {
     fontSize: 24,
     fontWeight: 'bold',
     color: 'black',
     textAlign: 'center',
-    marginTop: 20,
     marginVertical: 20,
   },
   buttonContainer: {

@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, Button, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, Text, Button, Pressable, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 
-export default function DetectLive() {
+export default function Detect() {
     const router = useRouter();
+
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.buttonLeft} onPress={() => router.back()}>
+            <Pressable style={styles.buttonLeft} onPress={() => router.push('/')}>
                 <Text style={styles.buttonTextLeft}>Back</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonRight} onPress={() => router.push('/detect_capture')}>
+            </Pressable>
+            <Pressable style={styles.buttonRight} onPress={() => router.push('/detect_capture')}>
                 <Text style={styles.buttonTextRight}>Detect</Text>
-            </TouchableOpacity>
+            </Pressable>
             <View style={styles.topContainer}>
                 <Text style={styles.title}>Skin Lesion Classification</Text>
                 <Text style={styles.body}>

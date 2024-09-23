@@ -1,14 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 
-const Disclaimer: React.FC = () => {
+export default function Disclaimer() {
     const router = useRouter();
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+            <Pressable style={styles.backButton} onPress={() => router.push('/')}>
                 <Text style={styles.backButtonText}>Back</Text>
-            </TouchableOpacity>
+            </Pressable>
             <View style={styles.sContainer}>
                 <Text style={styles.title}>Disclaimer</Text>
                 <Text style={styles.content}>
@@ -76,5 +76,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
-export default Disclaimer;

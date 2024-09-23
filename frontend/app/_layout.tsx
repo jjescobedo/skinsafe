@@ -8,6 +8,7 @@ export default function RootLayout() {
       <Stack.Screen name="detect_capture" />
       <Stack.Screen name="detect_report" />
       <Stack.Screen name="weather" />
+      <Stack.Screen name="disclaimer" />
     </Stack>
   );
 }

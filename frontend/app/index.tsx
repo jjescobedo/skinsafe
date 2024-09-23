@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Text, View, Button, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, View, Button, StyleSheet, Pressable } from "react-native";
 import { useRouter } from "expo-router";
 import * as Location from 'expo-location';
 
@@ -17,18 +17,17 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
-      <Text>Edit app/index.tsx to edit this screen.</Text>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={() => router.push('/detect')}>
-            <Text style={styles.buttonText}>Detection</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => router.push('/weather')}>
-            <Text style={styles.buttonText}>Weather</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => router.push('/disclaimer')}>
-            <Text style={styles.buttonText}>Disclaimer</Text>
-          </TouchableOpacity>
-        </View>
+      <View style={styles.buttonContainer}>
+        <Pressable style={styles.button} onPress={() => router.push('/detect')}>
+          <Text style={styles.buttonText}>Detection</Text>
+        </Pressable>
+        <Pressable style={styles.button} onPress={() => router.push('/weather')}>
+          <Text style={styles.buttonText}>Weather</Text>
+        </Pressable>
+        <Pressable style={styles.button} onPress={() => router.push('/disclaimer')}>
+          <Text style={styles.buttonText}>Disclaimer</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }

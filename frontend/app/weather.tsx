@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Pressable, FlatList, ActivityIndicator } from '
 import { useRouter } from 'expo-router';
 import * as Location from 'expo-location';
 
-const Weather: React.FC = () => {
+export default function Weather() {
   const router = useRouter();
 
   // Placeholder data
@@ -113,7 +113,7 @@ const Weather: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Pressable style={styles.backButton} onPress={() => router.back()}>
+      <Pressable style={styles.backButton} onPress={() => router.push('/')}>
         <Text style={styles.backButtonText}>Back</Text>
       </Pressable>
       <View style={styles.uvweathContainer}>
@@ -208,6 +208,8 @@ const styles = StyleSheet.create({
   temperature: {
     fontSize: 24,
     fontWeight: 'bold',
+    marginTop: 4,
+    marginBottom: -10,
   },
 
   // UV styles
@@ -266,5 +268,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
-export default Weather;
