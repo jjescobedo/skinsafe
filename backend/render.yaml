@@ -1,9 +1,9 @@
 services:
   # A Docker web service
   - type: web
-    name: fastapi-example
+    name: congressional app challenge 2024
     runtime: python
-    plan: free
-    autoDeploy: true
+    plan: standard
+    autoDeploy: false
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT

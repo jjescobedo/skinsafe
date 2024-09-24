@@ -91,13 +91,6 @@ export default function Weather() {
     })();
   }, []);
 
-  useEffect(() => {
-    console.log('weatherCondition:', weatherCondition);
-    console.log('uvRisk:', uvRisk);
-    console.log('weatherTranslations:', weatherTranslations);
-    console.log('uvRiskTranslations:', uvRiskTranslations);
-  }, [weatherCondition, uvRisk]);
-
   if (loading) {
     return (
       <View style={styles.container}>

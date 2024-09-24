@@ -36,7 +36,7 @@ export default function DetectReport() {
         type: 'image/png',
       });
 
-      const response = await fetch('https://cac-2024-api.onrender.com/detection/predict', {
+      const response = await fetch('https://cac-2024.onrender.com/detection/predict', {
         method: 'POST',
         body: formData,
         headers: {
