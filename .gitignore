@@ -1,6 +1,5 @@
 backend/ml/data/train-image.hdf5
 backend/ml/data/train-metadata.csv
-render-api/
 
 frontend/.expo
 # OSX
