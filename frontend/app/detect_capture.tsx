@@ -7,13 +7,18 @@ import { useRouter } from 'expo-router';
 
 export default function DetectCapture() {
   const router = useRouter();
+
+  const handleBackPress = () => {
+    router.back(); 
+  };
+
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [cameraRef, setCameraRef] = useState(null);
   const [isCameraReady, setIsCameraReady] = useState(false);
 
   const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
-  const squareSize = 300; // Size of the square guideline
+  const squareSize = 200;
   const squareX = (screenWidth - squareSize) / 2;
   const squareY = (screenHeight - squareSize) / 2;
 
@@ -111,7 +116,7 @@ export default function DetectCapture() {
 
   return (
     <View style={styles.container}>
-      <Pressable style={styles.backButton} onPress={() => router.push('/detect')}>
+      <Pressable style={styles.backButton} onPress={handleBackPress}>
         <Image source={require('../assets/back.png')} style={styles.backButtonImage} />
         <View style={styles.backButtonCircle} />
       </Pressable>
@@ -231,8 +236,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.5)',
   },
   square: {
-    width: 300,
-    height: 300,
+    width: 200,
+    height: 200,
     borderWidth: 2,
     borderColor: 'white',
     borderStyle: 'dotted',

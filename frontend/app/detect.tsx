@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, Button, Pressable, Image } from 'react-native';
+import React from 'react';
+import { View, StyleSheet, Text, Pressable, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 
 export default function Detect() {
     const router = useRouter();
 
+    const handleBackPress = () => {
+        router.back();
+    };
+
     return (
         <View style={styles.container}>
-            <Pressable style={styles.buttonLeft} onPress={() => router.push('/')}>
+            <Pressable style={styles.buttonLeft} onPress={handleBackPress}>
                 <Text style={styles.buttonTextLeft}>Back</Text>
             </Pressable>
             <Pressable style={styles.buttonRight} onPress={() => router.push('/detect_capture')}>

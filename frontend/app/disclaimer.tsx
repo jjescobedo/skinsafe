@@ -4,9 +4,14 @@ import { useRouter } from 'expo-router';
 
 export default function Disclaimer() {
     const router = useRouter();
+
+    const handleBackPress = () => {
+      router.back();
+    };
+
     return (
         <View style={styles.container}>
-            <Pressable style={styles.backButton} onPress={() => router.push('/')}>
+            <Pressable style={styles.backButton} onPress={handleBackPress}>
                 <Text style={styles.backButtonText}>Back</Text>
             </Pressable>
             <View style={styles.sContainer}>

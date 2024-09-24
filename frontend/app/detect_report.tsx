@@ -68,13 +68,10 @@ export default function DetectReport() {
         )
       )}
       <View style={styles.buttonContainer}>
-        <Pressable style={styles.saveButton} onPress={() => router.push('/detect')}>
+        <Pressable style={styles.saveButton} onPress={() => router.replace('/')}>
           <Text style={styles.buttonText}>Save</Text>
         </Pressable>
-        <Pressable style={styles.evaluateMoreButton} onPress={() => router.push('/detect_capture')}>
-          <Text style={styles.buttonText}>Evaluate More</Text>
-        </Pressable>
-        <Pressable style={styles.discardButton} onPress={() => router.push('/detect_capture')}>
+        <Pressable style={styles.discardButton} onPress={() => router.back()}>
           <Text style={styles.buttonText}>Discard</Text>
         </Pressable>
       </View>

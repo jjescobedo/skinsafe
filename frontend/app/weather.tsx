@@ -6,6 +6,10 @@ import * as Location from 'expo-location';
 export default function Weather() {
   const router = useRouter();
 
+  const handleBackPress = () => {
+    router.back();
+  };
+
   // Placeholder data
   const [loading, setLoading] = useState(true);
   const [uvRating, setUvRating] = useState(null);
@@ -27,6 +31,13 @@ export default function Weather() {
 
   useEffect(() => {
     (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.log('Permission to access location was denied');
+        setLoading(false);
+        return;
+      }
+
       let location = await Location.getCurrentPositionAsync({});
       const { latitude, longitude } = location.coords;
   
@@ -113,7 +124,7 @@ export default function Weather() {
 
   return (
     <View style={styles.container}>
-      <Pressable style={styles.backButton} onPress={() => router.push('/')}>
+      <Pressable style={styles.backButton} onPress={handleBackPress}>
         <Text style={styles.backButtonText}>Back</Text>
       </Pressable>
       <View style={styles.uvweathContainer}>
