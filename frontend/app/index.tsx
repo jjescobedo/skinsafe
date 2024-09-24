@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Index() {
   const router = useRouter();
-  const [language, setLanguage] = useState('en'); // Default language is English
+  const [language, setLanguage] = useState('en');
 
   const welcomeAnim = useRef(new Animated.Value(300)).current; 
   const skinSafeAnim = useRef(new Animated.Value(300)).current; 
@@ -19,7 +19,14 @@ export default function Index() {
     };
 
     getLanguage();
+  }, []);
 
+  useEffect(() => {
+    // Reset animation values
+    welcomeAnim.setValue(300);
+    skinSafeAnim.setValue(300);
+
+    // Start animation sequence
     Animated.sequence([
       Animated.timing(welcomeAnim, {
         toValue: 0,
@@ -32,7 +39,7 @@ export default function Index() {
         useNativeDriver: true,
       }),
     ]).start();
-  }, []);
+  }, [language]); // Add language as a dependency
 
   const handleLanguageChange = async (lang) => {
     setLanguage(lang);
