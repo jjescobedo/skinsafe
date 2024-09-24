@@ -6,7 +6,7 @@ export default function RootLayout() {
       <Stack.Screen name="index" />
       <Stack.Screen name="detect" />
       <Stack.Screen name="detect_capture" />
-      <Stack.Screen name="detect_report" />
+      <Stack.Screen name="detect_evaluation" />
       <Stack.Screen name="weather" />
       <Stack.Screen name="disclaimer" />
     </Stack>

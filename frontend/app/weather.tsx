@@ -2,9 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, FlatList, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import * as Location from 'expo-location';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Weather() {
   const router = useRouter();
+  const [language, setLanguage] = useState('en'); // Default language is English
+
+  useEffect(() => {
+    const getLanguage = async () => {
+      const storedLanguage = await AsyncStorage.getItem('language');
+      if (storedLanguage) {
+        setLanguage(storedLanguage);
+      }
+    };
+
+    getLanguage();
+  }, []);
 
   const handleBackPress = () => {
     router.back();
@@ -12,21 +25,39 @@ export default function Weather() {
 
   // Placeholder data
   const [loading, setLoading] = useState(true);
-  const [uvRating, setUvRating] = useState(null);
-  const [uvRisk, setUvRisk] = useState(null);
-  const [temperature, setTemperature] = useState('87° F');
+  const [uvRating, setUvRating] = useState(0);
+  const [uvRisk, setUvRisk] = useState('low');
+  const [temperature, setTemperature] = useState('0° F');
   const [weatherCondition, setWeatherCondition] = useState('Sunny');
   const [weatherIcon, setWeatherIcon] = useState('🌞');
 
   // Dictionary for weather icons
   const weatherIcons = {
-    Sunny: '🌞',
-    Cloudy: '☁️',
+    'Sunny': '🌞',
+    'Clear': '🌞',
+    'Cloudy': '☁️',
     'Partly Cloudy': '⛅',
-    Windy: '🌬️',
-    Raining: '🌧️',
-    Snowing: '❄️',
-    Lightning: '⚡'
+    'Windy': '🌬️',
+    'Raining': '🌧️',
+    'Snowing': '❄️',
+    'Lightning': '⚡'
+  };
+
+  const weatherTranslations = {
+    'Sunny': { en: 'Sunny', es: 'Soleado' },
+    'Clear': { en: 'Clear', es: 'Despejado' },
+    'Cloudy': { en: 'Cloudy', es: 'Nublado' },
+    'Partly Cloudy': { en: 'Partly Cloudy', es: 'Parcialmente Nublado' },
+    'Windy': { en: 'Windy', es: 'Ventoso' },
+    'Raining': { en: 'Raining', es: 'Lluvioso' },
+    'Snowing': { en: 'Snowing', es: 'Nevando' },
+    'Lightning': { en: 'Lightning', es: 'Relámpago' }
+  };
+
+  const uvRiskTranslations = {
+    'Low': { en: 'Low ', es: 'Bajo' },
+    'Moderate' : { en: 'Moderate', es: 'Moderado' },
+    'Severe': { en: 'Severe', es: 'Severo' }
   };
 
   useEffect(() => {
@@ -37,13 +68,15 @@ export default function Weather() {
         setLoading(false);
         return;
       }
-
+  
       let location = await Location.getCurrentPositionAsync({});
       const { latitude, longitude } = location.coords;
   
       try {
         const response = await fetch(`https://cac-2024-api.onrender.com/weather/weather?lat=${latitude}&lon=${longitude}`);
         const data = await response.json();
+        console.log(data);
+
         setUvRating(data.uv_index);
         setUvRisk(data.skin_cancer_risk);
         const roundedTemperature = Math.round(data.temperature);
@@ -57,6 +90,13 @@ export default function Weather() {
       }
     })();
   }, []);
+
+  useEffect(() => {
+    console.log('weatherCondition:', weatherCondition);
+    console.log('uvRisk:', uvRisk);
+    console.log('weatherTranslations:', weatherTranslations);
+    console.log('uvRiskTranslations:', uvRiskTranslations);
+  }, [weatherCondition, uvRisk]);
 
   if (loading) {
     return (
@@ -81,43 +121,64 @@ export default function Weather() {
   if (uvRating <= 2) {
     protectionContent = (
       <View>
-        <Text style={[styles.protTitle, { color: uvRatingColor }]}>Low Skin Cancer Risk</Text>
+        <Text style={[styles.protTitle, { color: uvRatingColor }]}>
+          {language === 'en' ? 'Low Skin Cancer Risk' : 'Bajo Riesgo de Cáncer de Piel'}
+        </Text>
         <Text style={styles.protTextBody}>
-          UV radiation from the sun can damage skin cell DNA, leading to mutations that increase the risk of skin cancer. Protecting your skin with sunscreen, clothing, and shade helps reduce this risk.
-          </Text>
-        <FlatList data= {[
-            { key: 'No protection needed. You can safely stay outside!' },
+          {language === 'en' ? 
+            'UV radiation from the sun can damage skin cell DNA, leading to mutations that increase the risk of skin cancer. Protecting your skin with sunscreen, clothing, and shade helps reduce this risk.' : 
+            'La radiación UV del sol puede dañar el ADN de las células de la piel, lo que lleva a mutaciones que aumentan el riesgo de cáncer de piel. Proteger su piel con protector solar, ropa y sombra ayuda a reducir este riesgo.'
+          }
+        </Text>
+        <FlatList 
+          data={[
+            { key: language === 'en' ? 'No protection needed. You can safely stay outside!' : 'No se necesita protección. ¡Puedes quedarte afuera de manera segura!' },
           ]}
-          renderItem={({ item }) => <Text style={styles.protTextList}>{item.key}</Text>} />
+          renderItem={({ item }) => <Text style={styles.protTextList}>{item.key}</Text>} 
+        />
       </View>
     );
   } else if (uvRating <= 7) {
     protectionContent = (
       <View>
-        <Text style={[styles.protTitle, { color: uvRatingColor }]}>Moderate Skin Cancer Risk</Text>
+        <Text style={[styles.protTitle, { color: uvRatingColor }]}>
+          {language === 'en' ? 'Moderate Skin Cancer Risk' : 'Riesgo Moderado de Cáncer de Piel'}
+        </Text>
         <Text style={styles.protTextBody}>
-          UV radiation from the sun can damage skin cell DNA, leading to mutations that increase the risk of skin cancer. Protecting your skin with sunscreen, clothing, and shade helps reduce this risk.
-          </Text>
-        <FlatList data= {[
-            { key: 'Wear sunglasses and use SPF 30+ sunscreen.' },
-            { key: 'Seek shade during midday hours.' },
+          {language === 'en' ? 
+            'UV radiation from the sun can damage skin cell DNA, leading to mutations that increase the risk of skin cancer. Protecting your skin with sunscreen, clothing, and shade helps reduce this risk.' : 
+            'La radiación UV del sol puede dañar el ADN de las células de la piel, lo que lleva a mutaciones que aumentan el riesgo de cáncer de piel. Proteger su piel con protector solar, ropa y sombra ayuda a reducir este riesgo.'
+          }
+        </Text>
+        <FlatList 
+          data={[
+            { key: language === 'en' ? 'Wear sunglasses and use SPF 30+ sunscreen.' : 'Use gafas de sol y protector solar SPF 30+.' },
+            { key: language === 'en' ? 'Seek shade during midday hours.' : 'Busque sombra durante las horas del mediodía.' },
           ]}
-          renderItem={({ item }) => <Text style={styles.protTextList}>{item.key}</Text>} />
+          renderItem={({ item }) => <Text style={styles.protTextList}>{item.key}</Text>} 
+        />
       </View>
     );
   } else {
     protectionContent = (
       <View>
-        <Text style={[styles.protTitle, { color: uvRatingColor }]}>Severe Skin Cancer Risk</Text>
+        <Text style={[styles.protTitle, { color: uvRatingColor }]}>
+          {language === 'en' ? 'Severe Skin Cancer Risk' : 'Riesgo Severo de Cáncer de Piel'}
+        </Text>
         <Text style={styles.protTextBody}>
-          UV radiation from the sun can damage skin cell DNA, leading to mutations that increase the risk of skin cancer. Protecting your skin with sunscreen, clothing, and shade helps reduce this risk.
-          </Text>
-        <FlatList data= {[
-            { key: 'Wear sunglasses and use SPF 30+ sunscreen.' },
-            { key: 'Avoid being outside during midday hours.' },
-            { key: 'Seek shade during midday hours.' },
+          {language === 'en' ? 
+            'UV radiation from the sun can damage skin cell DNA, leading to mutations that increase the risk of skin cancer. Protecting your skin with sunscreen, clothing, and shade helps reduce this risk.' : 
+            'La radiación UV del sol puede dañar el ADN de las células de la piel, lo que lleva a mutaciones que aumentan el riesgo de cáncer de piel. Proteger su piel con protector solar, ropa y sombra ayuda a reducir este riesgo.'
+          }
+        </Text>
+        <FlatList 
+          data={[
+            { key: language === 'en' ? 'Wear sunglasses and use SPF 30+ sunscreen.' : 'Use gafas de sol y protector solar SPF 30+.' },
+            { key: language === 'en' ? 'Avoid being outside during midday hours.' : 'Evite estar afuera durante las horas del mediodía.' },
+            { key: language === 'en' ? 'Seek shade during midday hours.' : 'Busque sombra durante las horas del mediodía.' },
           ]}
-          renderItem={({ item }) => <Text style={styles.protTextList}>{item.key}</Text>} />
+          renderItem={({ item }) => <Text style={styles.protTextList}>{item.key}</Text>} 
+        />
       </View>
     );
   }
@@ -125,21 +186,21 @@ export default function Weather() {
   return (
     <View style={styles.container}>
       <Pressable style={styles.backButton} onPress={handleBackPress}>
-        <Text style={styles.backButtonText}>Back</Text>
+        <Text style={styles.backButtonText}>{language === 'en' ? 'Back' : 'Atrás'}</Text>
       </Pressable>
       <View style={styles.uvweathContainer}>
         <View style={styles.leftContainer}>
-          <Text style={styles.weatherTitle}>Weather</Text>
+          <Text style={styles.weatherTitle}>{language === 'en' ? 'Weather' : 'Clima'}</Text>
           <View style={styles.currentWeather}>
             <Text style={styles.weatherIcon}>{weatherIcon}</Text>
-            <Text style={styles.condition}>{weatherCondition}</Text>
+            <Text style={styles.condition}>{weatherTranslations[weatherCondition][language]}</Text>
             <Text style={styles.temperature}>{temperature}</Text>
           </View>
         </View>
         <View style={styles.rightContainer}>
-          <Text style={styles.uvTitle}>UV Rating</Text>
+          <Text style={styles.uvTitle}>{language === 'en' ? 'UV Rating' : 'Índice UV'}</Text>
           <Text style={[styles.uvRating, { color: uvRatingColor }]}>{uvRating}</Text>
-          <Text style={styles.uvRisk}>{uvRisk}</Text>
+          <Text style={styles.uvRisk}>{uvRiskTranslations[uvRisk][language]}</Text>
         </View>
       </View>
       <View style={styles.protContainer}>
@@ -230,7 +291,7 @@ const styles = StyleSheet.create({
     marginTop: 1,
   },
   uvRating: {
-    fontSize: 60,
+    fontSize: 68,
     fontWeight: 'bold',
     marginTop: 8,
     marginBottom: 10,
@@ -241,8 +302,6 @@ const styles = StyleSheet.create({
     marginTop: -6,
   },
 
-  // Protection styles
-  
   // Protection styles
   protContainer: {
     backgroundColor: 'white',
@@ -262,9 +321,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
   },
-  protText: {
-    fontSize: 16,
+  protTextBody: {
+    fontSize: 14,
     color: '#333',
+    marginBottom: 10,
+  },
+  protTextList: {
+    fontSize: 18,
     marginBottom: 10,
   },
   protButton: {

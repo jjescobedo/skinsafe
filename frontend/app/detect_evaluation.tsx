@@ -1,12 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, Image, ActivityIndicator, Pressable } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function DetectReport() {
   const router = useRouter();
   const { photoUri } = useLocalSearchParams();
   const [loading, setLoading] = useState(true);
   const [percentage, setPercentage] = useState(null);
+  const [language, setLanguage] = useState('en'); // Default language is English
+
+  useEffect(() => {
+    const getLanguage = async () => {
+      const storedLanguage = await AsyncStorage.getItem('language');
+      if (storedLanguage) {
+        setLanguage(storedLanguage);
+      }
+    };
+
+    getLanguage();
+  }, []);
 
   useEffect(() => {
     if (photoUri) {
@@ -43,15 +56,15 @@ export default function DetectReport() {
 
   function getDiagnosisText(percentage) {
     if (percentage < 0.25) {
-      return 'Benign';
+      return language === 'en' ? 'Benign' : 'Benigno';
     } else if (percentage >= 0.35 && percentage < 0.45) {
-      return 'Likely Benign';
+      return language === 'en' ? 'Likely Benign' : 'Probablemente Benigno';
     } else if (percentage >= 0.45 && percentage < 0.75) {
-      return 'Inconclusive';
+      return language === 'en' ? 'Inconclusive' : 'Inconcluso';
     } else if (percentage >= 0.75 && percentage < 0.85) {
-      return 'Likely Malignant';
+      return language === 'en' ? 'Likely Malignant' : 'Probablemente Maligno';
     } else {
-      return 'Malignant';
+      return language === 'en' ? 'Malignant' : 'Maligno';
     }
   }
 
@@ -69,10 +82,10 @@ export default function DetectReport() {
       )}
       <View style={styles.buttonContainer}>
         <Pressable style={styles.saveButton} onPress={() => router.replace('/')}>
-          <Text style={styles.buttonText}>Save</Text>
+          <Text style={styles.buttonText}>{language === 'en' ? 'Save' : 'Guardar'}</Text>
         </Pressable>
         <Pressable style={styles.discardButton} onPress={() => router.back()}>
-          <Text style={styles.buttonText}>Discard</Text>
+          <Text style={styles.buttonText}>{language === 'en' ? 'Discard' : 'Descartar'}</Text>
         </Pressable>
       </View>
     </View>

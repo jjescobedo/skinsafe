@@ -1,12 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, Button, Pressable, Image, Alert, Dimensions } from 'react-native';
-import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
+import { CameraView, CameraType, useCameraPermissions, Camera } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function DetectCapture() {
   const router = useRouter();
+  const [language, setLanguage] = useState('en');
+
+  useEffect(() => {
+    const getLanguage = async () => {
+      const storedLanguage = await AsyncStorage.getItem('language');
+      if (storedLanguage) {
+        setLanguage(storedLanguage);
+      }
+    };
+
+    getLanguage();
+  }, []);
 
   const handleBackPress = () => {
     router.back(); 
@@ -29,8 +42,10 @@ export default function DetectCapture() {
   if (!permission.granted) {
     return (
       <View style={styles.container}>
-        <Text style={styles.message}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="grant permission" />
+        <Text style={styles.message}>
+          {language === 'en' ? 'We need your permission to show the camera' : 'Necesitamos su permiso para mostrar la cámara'}
+        </Text>
+        <Button onPress={requestPermission} title={language === 'en' ? 'Grant Permission' : 'Conceder Permiso'} />
       </View>
     );
   }
@@ -42,7 +57,7 @@ export default function DetectCapture() {
   async function takePicture() {
     if (cameraRef && isCameraReady) {
       try {
-        const options = { quality: 0.5, base64: true, flashMode: 'on' };
+        const options = { quality: 0.5, base64: true };
         const photo = await cameraRef.takePictureAsync(options);
         const croppedPhoto = await cropImageToSquare(photo);
         navigateToReport(croppedPhoto.uri);
@@ -95,7 +110,7 @@ export default function DetectCapture() {
           navigateToReport(croppedPhoto.uri);
         } catch (error) {
           console.error("Error cropping image:", error);
-          Alert.alert("Error", "The image could not be cropped automatically. Please recrop the image.");
+          Alert.alert(language === 'en' ? 'Error' : 'Error', language === 'en' ? 'The image could not be cropped automatically. Please recrop the image.' : 'La imagen no se pudo recortar automáticamente. Por favor, recorte la imagen nuevamente.');
         }
       } else {
         navigateToReport(uri);
@@ -109,7 +124,7 @@ export default function DetectCapture() {
 
   function navigateToReport(photoUri) {
     router.push({
-      pathname: '/detect_report',
+      pathname: '/detect_evaluation',
       params: { photoUri },
     });
   }
@@ -138,7 +153,7 @@ export default function DetectCapture() {
             <Image source={require('../assets/capture.png')} style={styles.captureButtonImage} />
           </Pressable>
           <Pressable style={styles.uploadButton} onPress={pickImage}>
-            <Text style={styles.text}>Upload</Text>
+            <Text style={styles.text}>{language === 'en' ? 'Upload' : 'Subir'}</Text>
           </Pressable>
         </View>
         <View style={styles.overlay}>
