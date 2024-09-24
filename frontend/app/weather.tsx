@@ -26,7 +26,7 @@ export default function Weather() {
   // Placeholder data
   const [loading, setLoading] = useState(true);
   const [uvRating, setUvRating] = useState(0);
-  const [uvRisk, setUvRisk] = useState('low');
+  const [uvRisk, setUvRisk] = useState('Low');
   const [temperature, setTemperature] = useState('0° F');
   const [weatherCondition, setWeatherCondition] = useState('Sunny');
   const [weatherIcon, setWeatherIcon] = useState('🌞');
@@ -73,7 +73,7 @@ export default function Weather() {
       const { latitude, longitude } = location.coords;
   
       try {
-        const response = await fetch(`https://cac-2024-api.onrender.com/weather/weather?lat=${latitude}&lon=${longitude}`);
+        const response = await fetch(`https://cac-2024.onrender.com/weather/weather?lat=${latitude}&lon=${longitude}`);
         const data = await response.json();
         console.log(data);
 
