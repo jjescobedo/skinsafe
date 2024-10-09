@@ -218,9 +218,7 @@ export default function Weather() {
         </View>
       </ViewShot>
       <Pressable style={styles.shareButton} onPress={shareWeather}>
-        <Text>
-          Share
-        </Text>
+        <Text style={styles.shareButtonText}>{language === 'en' ? 'Share' : 'Compartir'}</Text>
       </Pressable>
     </View>
   );
@@ -329,7 +327,7 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     marginLeft: 'auto',
     marginRight: 'auto',
-    marginTop: 20,
+    marginTop: 10,
     padding: 20,
   },
   protTitle: {
@@ -346,23 +344,23 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 10,
   },
-  protButton: {
-    backgroundColor: '#007BFF',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  protButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  // Share FAB
   shareButton: {
+    backgroundColor: 'white',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    padding: 10,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'absolute',
-    bottom: 35,
-    right: 35,
-  }
+    marginLeft: 260,
+    marginRight: 20,
+    marginTop: 20,
+  },
+  shareButtonText: {
+    color: 'black',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
 });

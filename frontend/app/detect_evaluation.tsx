@@ -55,6 +55,7 @@ export default function DetectReport() {
   }
 
   function getDiagnosisText(percentage) {
+    percentage = percentage * 10;
     if (percentage < 0.25) {
       return language === 'en' ? 'Benign' : 'Benigno';
     } else if (percentage >= 0.35 && percentage < 0.45) {
