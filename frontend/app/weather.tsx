@@ -8,7 +8,7 @@ import * as Sharing from 'expo-sharing';
 
 export default function Weather() {
   const router = useRouter();
-  const [language, setLanguage] = useState('en'); // Default language is English
+  const [language, setLanguage] = useState('en');
 
   useEffect(() => {
     const getLanguage = async () => {
@@ -25,7 +25,6 @@ export default function Weather() {
     router.back();
   };
 
-  // Placeholder data
   const [loading, setLoading] = useState(true);
   const [uvRating, setUvRating] = useState(0);
   const [uvRisk, setUvRisk] = useState('Low');
@@ -33,7 +32,6 @@ export default function Weather() {
   const [weatherCondition, setWeatherCondition] = useState('Sunny');
   const [weatherIcon, setWeatherIcon] = useState('🌞');
 
-  // Dictionary for weather icons
   const weatherIcons = {
     'Sunny': '🌞',
     'Clear': '🌞',
@@ -111,7 +109,6 @@ export default function Weather() {
     );
   }
 
-  // Determine UV rating color
   let uvRatingColor;
   if (uvRating <= 2) {
     uvRatingColor = 'green';
@@ -121,7 +118,6 @@ export default function Weather() {
     uvRatingColor = 'red';
   }
 
-  // Determine protection content based on UV rating
   let protectionContent;
   if (uvRating <= 2) {
     protectionContent = (
@@ -187,8 +183,6 @@ export default function Weather() {
       </View>
     );
   }
-
-
 
   return (
     <View style={styles.container}>
@@ -273,7 +267,7 @@ const styles = StyleSheet.create({
     marginRight: 30,
   },
 
-  // Weather styles
+  // Weather
   weatherTitle: {
     fontSize: 20,
     fontWeight: 'bold',
@@ -298,7 +292,7 @@ const styles = StyleSheet.create({
     marginBottom: -10,
   },
 
-  // UV styles
+  // UV
   uvTitle: {
     fontSize: 20,
     fontWeight: 'bold',
@@ -316,7 +310,7 @@ const styles = StyleSheet.create({
     marginTop: -6,
   },
 
-  // Protection styles
+  // Protection
   protContainer: {
     backgroundColor: 'white',
     width: 350,

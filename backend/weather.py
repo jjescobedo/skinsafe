@@ -32,11 +32,11 @@ def get_weather_data(lat: float, lon: float) -> dict:
         "lat": lat,
         "lon": lon,
         "appid": API_KEY,
-        "units": "imperial"  # Use metric units for temperature in Celsius
+        "units": "imperial"
     }
     try:
         response = requests.get(BASE_URL, params=params)
-        response.raise_for_status()  # Raise an HTTPError for bad responses
+        response.raise_for_status()
         data = response.json()
         return data
     except requests.exceptions.RequestException as e:

@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Detect() {
     const router = useRouter();
-    const [language, setLanguage] = useState('en'); // Default language is English
+    const [language, setLanguage] = useState('en');
 
     useEffect(() => {
         const getLanguage = async () => {

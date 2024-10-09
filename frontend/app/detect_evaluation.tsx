@@ -8,7 +8,7 @@ export default function DetectReport() {
   const { photoUri } = useLocalSearchParams();
   const [loading, setLoading] = useState(true);
   const [percentage, setPercentage] = useState(null);
-  const [language, setLanguage] = useState('en'); // Default language is English
+  const [language, setLanguage] = useState('en');
 
   useEffect(() => {
     const getLanguage = async () => {

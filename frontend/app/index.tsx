@@ -23,13 +23,11 @@ export default function Index() {
   }, []);
 
   useEffect(() => {
-    // Reset animation values
     welcomeAnim.setValue(300);
     skinSafeAnim.setValue(300);
 
     logoOpacity.setValue(0);
 
-    // Start animation sequence
     Animated.sequence([
       Animated.timing(welcomeAnim, {
         toValue: 0,
@@ -47,7 +45,7 @@ export default function Index() {
         useNativeDriver: true,
       }),
     ]).start();
-  }, [language]); // Add language as a dependency
+  }, [language]);
 
   const handleLanguageChange = async (lang) => {
     setLanguage(lang);
