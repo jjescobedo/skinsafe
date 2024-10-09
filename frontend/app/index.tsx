@@ -81,7 +81,7 @@ export default function Index() {
         <View style={language === 'en' ? styles.buttonContainerEn : styles.buttonContainerEs}>
           <View style={language === 'en' ? styles.topButtonsEn : styles.topButtonsEs}>
             <Pressable style={language === 'en' ? styles.buttonFeatureLeftEn : styles.buttonFeatureLeftEs} onPress={() => router.push('/detect')}>
-              <Image source={require('../assets/camera_icon.png')} style={language === 'en' ? styles.buttonImageEs : styles.buttonImageEn} />
+              <Image source={require('../assets/detect_icon.png')} style={language === 'en' ? styles.buttonImageEs : styles.buttonImageEn} />
               <Text style={language === 'en' ? styles.buttonTextFeatureLeftEn : styles.buttonTextFeatureLeftEs}>{language === 'en' ? 'Detection' : 'Detección'}</Text>
             </Pressable>
             <Pressable style={language === 'en' ? styles.buttonFeatureRightEn : styles.buttonFeatureRightEs} onPress={() => router.push('/weather')}>
