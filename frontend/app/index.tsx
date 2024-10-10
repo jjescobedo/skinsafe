@@ -2,11 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Text, View, StyleSheet, Pressable, Animated, Image } from "react-native";
 import { useRouter } from "expo-router";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as MediaLibrary from 'expo-media-library';
 
 export default function Index() {
   const router = useRouter();
   const [language, setLanguage] = useState('en');
-
+  const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState(null);
+  
   const welcomeAnim = useRef(new Animated.Value(300)).current; 
   const skinSafeAnim = useRef(new Animated.Value(300)).current;
   const logoOpacity = useRef(new Animated.Value(0)).current;  
@@ -19,7 +21,13 @@ export default function Index() {
       }
     };
 
+    const requestPermissions = async () => {
+      const { status } = await MediaLibrary.requestPermissionsAsync();
+      setHasMediaLibraryPermission(status === 'granted'); 
+    };
+
     getLanguage();
+    requestPermissions();
   }, []);
 
   useEffect(() => {

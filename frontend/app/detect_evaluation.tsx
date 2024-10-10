@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, Image, ActivityIndicator, Pressable } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as MediaLibrary from 'expo-media-library';
 
 export default function DetectReport() {
   const router = useRouter();
@@ -69,6 +70,16 @@ export default function DetectReport() {
     }
   }
 
+  const saveImage = async () => {
+    try {
+      const asset = await MediaLibrary.createAssetAsync(photoUri);
+      await MediaLibrary.createAlbumAsync('MyApp', asset, false);
+      router.back();
+    } catch (error) {
+      console.error("Error saving photo:", error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Image source={{ uri: photoUri }} style={styles.previewImage} />
@@ -82,7 +93,7 @@ export default function DetectReport() {
         )
       )}
       <View style={styles.buttonContainer}>
-        <Pressable style={styles.saveButton} onPress={() => router.replace('/')}>
+        <Pressable style={styles.saveButton} onPress={saveImage}>
           <Text style={styles.buttonText}>{language === 'en' ? 'Save' : 'Guardar'}</Text>
         </Pressable>
         <Pressable style={styles.discardButton} onPress={() => router.back()}>
